@@ -6,7 +6,11 @@ class ImageGalleryItem extends Component {
 
     return (
       <li className="gallery-item">
-        <img src={image.webformatURL} alt={image.tags} />
+        <img
+          src={image.webformatURL}
+          alt={image.tags}
+          style={{ height: 100 }}
+        />
       </li>
     );
   }
