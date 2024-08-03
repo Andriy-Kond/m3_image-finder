@@ -5,9 +5,12 @@ import React, { Component } from "react";
 
 class Button extends Component {
   render() {
-    const { onLoadMore } = this.props;
+    const { onLoadMore, isDisabledLoadMoreBtn } = this.props;
     return (
-      <button type="button" onClick={onLoadMore}>
+      <button
+        type="button"
+        onClick={onLoadMore}
+        disabled={isDisabledLoadMoreBtn}>
         Load More
       </button>
     );
