@@ -1,8 +1,9 @@
 # Пошук зображень
 
-Напиши застосунок пошуку зображень за ключовим словом. Прев'ю робочого застосунку дивись за посиланням: https://drive.google.com/file/d/1oXCGyiq4uKwW0zzraZLKk4lh3voBlBzZ/view.
+Напиши застосунок пошуку зображень за ключовим словом. Прев'ю робочого застосунку дивись за [посиланням](https://drive.google.com/file/d/1oXCGyiq4uKwW0zzraZLKk4lh3voBlBzZ/view): .
 
-Створи компоненти <Searchbar>, <ImageGallery>, <ImageGalleryItem>, <Loader>, <Button> і <Modal>. Готові стилі компонентів можна взяти у файлі styles.css (https://downgit.evecalm.com/#/home?url=https://github.com/goitacademy/react-homework/blob/master/homework-03/image-finder/styles.css) і підправити під себе, якщо потрібно.
+Створи компоненти `<Searchbar>`, `<ImageGallery>`, `<ImageGalleryItem>`, `<Loader>`, `<Button>` і `<Modal>`. Готові стилі компонентів можна взяти у файлі [styles.css](https://downgit.evecalm.com/#/home?url=https://github.com/goitacademy/react-homework/blob/master/homework-03/image-finder/styles.css) і підправити під себе, якщо потрібно.
+
 ![alt text](image.png)
 
 ## Інструкція Pixabay API
@@ -21,27 +22,27 @@ Pixabay API підтримує пагінацію, за замовчування
 - webformatURL - посилання на маленьке зображення для списку карток
 - largeImageURL - посилання на велике зображення для модального вікна
 
-  ## Опис компонента <Searchbar>
+  ## Опис компонента `<Searchbar>`
 
   Компонент приймає один проп onSubmit – функцію для передачі значення інпута під час сабміту форми. Створює DOM-елемент наступної структури.
 
-      <header class="searchbar">
-        <form class="form">
-          <button type="submit" class="button">
-            <span class="button-label">Search</span>
-          </button>
+        <header class="searchbar">
+          <form class="form">
+            <button type="submit" class="button">
+              <span class="button-label">Search</span>
+            </button>
 
-          <input
-            class="input"
-            type="text"
-            autocomplete="off"
-            autofocus
-            placeholder="Search images and photos"
-          />
-        </form>
-      </header>
+            <input
+              class="input"
+              type="text"
+              autocomplete="off"
+              autofocus
+              placeholder="Search images and photos"
+            />
+          </form>
+        </header>
 
-## Опис компонента <ImageGallery>
+## Опис компонента `<ImageGallery>`
 
 Список карток зображень. Створює DOM-елемент наступної структури.
 
@@ -49,7 +50,7 @@ Pixabay API підтримує пагінацію, за замовчування
       <!-- Набір <li> із зображеннями -->
     </ul>
 
-## Опис компонента <ImageGalleryItem>
+## Опис компонента `<ImageGalleryItem>`
 
 Компонент елемента списку із зображенням. Створює DOM-елемент наступної структури.
 
@@ -57,15 +58,15 @@ Pixabay API підтримує пагінацію, за замовчування
       <img src="" alt="" />
     </li>
 
-## Опис компонента <Button>
+## Опис компонента `<Button>`
 
 При натисканні на кнопку Load more повинна довантажуватись наступна порція зображень і рендеритися разом із попередніми. Кнопка повинна рендеритися лише тоді, коли є якісь завантажені зображення. Якщо масив зображень порожній, кнопка не рендериться.
 
-## Опис компонента <Loader>
+## Опис компонента `<Loader>`
 
 Компонент спінера відображається, доки відбувається завантаження зображень. Використовуйте будь-який готовий компонент, наприклад react-loader-spinner або будь-який інший.
 
-## Опис компонента <Modal>
+## Опис компонента `<Modal>`
 
 Під час кліку на елемент галереї повинно відкриватися модальне вікно з темним оверлеєм і відображатися велика версія зображення. Модальне вікно повинно закриватися по натисканню клавіші ESC або по кліку на оверлеї.
 
