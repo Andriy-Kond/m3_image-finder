@@ -2,21 +2,21 @@ import React, { Component } from "react";
 
 class SearchBar extends Component {
   state = {
-    filter: "",
+    query: "",
   };
 
-  changeFilter = e => {
-    this.setState({ filter: e.target.value });
+  changeQuery = e => {
+    this.setState({ query: e.target.value });
   };
 
   onSubmit = e => {
     e.preventDefault();
-    this.props.onSearchImage(this.state.filter);
-    this.setState({ filter: "" });
+    this.props.onSetQuery(this.state.query);
+    this.setState({ query: "" });
   };
 
   render() {
-    const { filter } = this.state;
+    const { query } = this.state;
 
     return (
       <header className="searchbar">
@@ -27,8 +27,8 @@ class SearchBar extends Component {
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
-            value={filter}
-            onChange={this.changeFilter}
+            value={query}
+            onChange={this.changeQuery}
           />
           <button type="submit" className="button">
             <span className="button-label">Search</span>
