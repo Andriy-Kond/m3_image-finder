@@ -1,16 +1,20 @@
-import Modal from "components/Modal";
 import React, { Component } from "react";
+import Modal from "components/Modal";
 
 class ImageGalleryItem extends Component {
-  state = { largeImage: false };
+  state = {
+    isShowModal: false,
+  };
 
-  openImage = () => {
-    this.setState({ largeImage: true });
+  toggleShowImage = () => {
+    this.setState(prevState => ({
+      isShowModal: !prevState.isShowModal,
+    }));
   };
 
   render() {
     const { image } = this.props;
-    const { largeImage } = this.state;
+    const { isShowModal } = this.state;
 
     return (
       <>
@@ -19,12 +23,12 @@ class ImageGalleryItem extends Component {
             src={image.webformatURL}
             alt={image.tags}
             style={{ height: 100 }}
-            onClick={this.openImage}
+            onClick={this.toggleShowImage}
           />
         </li>
 
-        {largeImage && (
-          <Modal largeImageURL={image.largeImageURL} alt={image.tags} />
+        {isShowModal && (
+          <Modal image={image} toggleShowImage={this.toggleShowImage} />
         )}
       </>
     );

@@ -1,5 +1,3 @@
-// todo кнопка і спінер вилітають за межі body при натисканні кнопки Load More. Треба зробити прокручування, чи щось таке до самого низу, щоби їх було видно
-
 import React, { Component } from "react";
 import ImageGallery from "components/ImageGallery";
 import SearchBar from "components/SearchBar";

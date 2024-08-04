@@ -9,10 +9,10 @@ import Loader from "components/Loader";
 
 class App extends Component {
   state = {
+    query: "",
     imagesList: [],
     totalHits: null,
     page: 1,
-    query: "",
     isLoading: false,
   };
 
@@ -106,9 +106,7 @@ class App extends Component {
 
   render() {
     const { imagesList, totalHits, isLoading } = this.state;
-
     const remainsItems = totalHits - imagesList.length;
-
     const isDisabledLoadMoreBtn = remainsItems === 0;
 
     return (
