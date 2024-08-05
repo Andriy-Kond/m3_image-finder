@@ -9,10 +9,9 @@ import Button from "components/Button";
 import Loader from "components/Loader";
 
 Notify.init({
-  timeout: 2000,
+  timeout: 3000,
   clickToClose: true,
   cssAnimationStyle: "from-right",
-  closeButton: true,
 });
 
 class App extends Component {
@@ -58,7 +57,6 @@ class App extends Component {
 
   // Функція для оновлення стану за результатами запиту на сервер
   updateState = ({ hits, totalHits }) => {
-    console.log("updateState");
     this.setState(
       prevState => {
         return {
@@ -75,7 +73,7 @@ class App extends Component {
         const { imagesList, totalHits, page } = this.state;
         const remainsItems = totalHits - imagesList.length;
         if (totalHits > 0 && page === 1) {
-          Notify.success(`We found ${totalHits} images!`);
+          Notify.success(`We found ${totalHits} images!`, { timeout: 2000 });
         } else {
         }
 
@@ -85,7 +83,6 @@ class App extends Component {
           if (remainsItems === 0) {
             Notify.info(
               `This was the last batch of images. We don't have any more.`,
-              { timeout: 3000 },
             );
           }
         }
@@ -110,7 +107,6 @@ class App extends Component {
 
   // Дії при кліку на кнопку Search (новий пошук)
   searchBtn = async query => {
-    console.log("search btn");
     this.setState({ page: 1 }, async () => {
       await this.onSearchImage(query);
     });

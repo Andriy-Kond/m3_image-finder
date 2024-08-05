@@ -1,7 +1,13 @@
 import React, { Component } from "react";
 import * as basicLightbox from "basiclightbox";
-import "basiclightbox/dist/basicLightbox.min.css";
-import { Overlay, ModalIns } from "./Modal.styled";
+// import "basiclightbox/dist/basicLightbox.min.css";
+import "basiclightbox/src/styles/main.scss";
+import { Overlay, ModalIns, ModalImg } from "./Modal.styled";
+
+// $basicLightbox__background: rgba(0, 0, 0, 0.8); // Background color
+// $basicLightbox__zIndex: 1000; // Stack order
+// $basicLightbox__duration: 0.4s; // Transition duration
+// $basicLightbox__timing: ease; // Transition timing
 
 class ModalWindow extends Component {
   state = {
@@ -13,12 +19,14 @@ class ModalWindow extends Component {
 
     const { image } = this.props;
     const instance = basicLightbox.create(
-      `
-        <${Overlay}>
+      ` <${Overlay}>
         <${ModalIns}>
         <img src=${image.largeImageURL} alt=${image.tags} />
         </${ModalIns}>
         </${Overlay}>
+
+
+    
         `,
       {
         onClose: () => {
@@ -34,7 +42,6 @@ class ModalWindow extends Component {
 
   componentWillUnmount() {
     window.removeEventListener("keydown", this.handleKeydownEsc);
-    console.log("unmount");
   }
 
   handleKeydownEsc = e => {

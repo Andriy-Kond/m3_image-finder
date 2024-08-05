@@ -19,4 +19,10 @@ const ModalIns = styled.div`
   max-height: calc(100vh - 24px);
 `;
 
-export { Overlay, ModalIns };
+const ModalImg = styled.img`
+  width: 100%;
+  height: 100%;
+  height: calc(100vh - 200px);
+`;
+
+export { Overlay, ModalIns, ModalImg };
