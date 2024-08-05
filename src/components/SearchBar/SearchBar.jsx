@@ -3,7 +3,6 @@ import {
   Header,
   SearchForm,
   SearchFormBtn,
-  SearchFormBtnLbl,
   SearchFormInput,
 } from "./SearchBar.styled";
 
@@ -42,7 +41,6 @@ class SearchBar extends Component {
             <MdOutlineImageSearch
               style={{ width: "100%", height: "100%", fill: "blue" }}
             />
-            {/* <SearchFormBtnLbl>Search</SearchFormBtnLbl> */}
           </SearchFormBtn>
         </SearchForm>
       </Header>

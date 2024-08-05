@@ -65,6 +65,4 @@ const SearchFormBtn = styled.button`
   }
 `;
 
-const SearchFormBtnLbl = styled.span``;
-
-export { Header, SearchForm, SearchFormBtn, SearchFormBtnLbl, SearchFormInput };
+export { Header, SearchForm, SearchFormBtn, SearchFormInput };

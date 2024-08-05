@@ -1,6 +1,5 @@
 import React, { Component, createRef } from "react";
-import { Slide, ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Notify } from "notiflix/build/notiflix-notify-aio";
 
 import { Container } from "./App.styled";
 import ImageGalleryV1 from "components/ImageGallery/ImageGallery_v1";
@@ -8,6 +7,13 @@ import SearchBar from "components/SearchBar";
 import searchAPI from "services/searchAPI";
 import Button from "components/Button";
 import Loader from "components/Loader";
+
+Notify.init({
+  timeout: 2000,
+  clickToClose: true,
+  cssAnimationStyle: "from-right",
+  closeButton: true,
+});
 
 class App extends Component {
   constructor(props) {
@@ -24,11 +30,10 @@ class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
+    const { imagesList, isLoading } = this.state;
+
     // Прокрутка вниз, якщо зображення додані, або показується loading
-    if (
-      this.state.imagesList.length > prevState.imagesList.length ||
-      this.state.isLoading
-    ) {
+    if (imagesList.length > prevState.imagesList.length || isLoading) {
       if (this.loadMoreRef.current) {
         this.loadMoreRef.current.scrollIntoView({ behavior: "smooth" });
       }
@@ -42,27 +47,50 @@ class App extends Component {
       this.setState({ page: 1, query, imagesList: [] }, async () => {
         // запит до API тільки після оновлення стану:
         const result = await this.fetchImages(query);
-        this.setState(result);
+        this.updateState(result);
       });
     } else {
       // Якщо запит не змінювався, одразу виконую запит
       const result = await this.fetchImages(query);
-      this.setState(result);
+      this.updateState(result);
     }
   };
 
   // Функція для оновлення стану за результатами запиту на сервер
-  setState = ({ hits, totalHits }) => {
-    this.setState(prevState => {
-      return {
-        imagesList:
-          this.state.page === 1
-            ? [...hits]
-            : [...prevState.imagesList, ...hits],
-        totalHits,
-        isLoading: false,
-      };
-    });
+  updateState = ({ hits, totalHits }) => {
+    console.log("updateState");
+    this.setState(
+      prevState => {
+        return {
+          imagesList:
+            this.state.page === 1
+              ? [...hits]
+              : [...prevState.imagesList, ...hits],
+          totalHits,
+          isLoading: false,
+        };
+      },
+      () => {
+        // Обробка повідомлень
+        const { imagesList, totalHits, page } = this.state;
+        const remainsItems = totalHits - imagesList.length;
+        if (totalHits > 0 && page === 1) {
+          Notify.success(`We found ${totalHits} images!`);
+        } else {
+        }
+
+        if (totalHits === 0) {
+          Notify.info(`Sorry we not found any images with this request`);
+        } else {
+          if (remainsItems === 0) {
+            Notify.info(
+              `This was the last batch of images. We don't have any more.`,
+              { timeout: 3000 },
+            );
+          }
+        }
+      },
+    );
   };
 
   // Функція для виконання запиту на сервер:
@@ -73,16 +101,9 @@ class App extends Component {
         this.state.page,
       );
 
-      if (totalHits > 0) {
-        toast.success(`We found ${totalHits} images!`);
-      } else {
-        toast.info(`Sorry we not found any images with this request`);
-      }
-
       return { hits, totalHits };
     } catch (error) {
-      console.log("error:::", error.message);
-      toast.error(`error.massage`);
+      Notify.failure(`Error: ${error.message}`);
       this.setState({ isLoading: false });
     }
   };
@@ -112,7 +133,6 @@ class App extends Component {
 
     return (
       <>
-        <ToastContainer autoClose={2000} transition={Slide} />
         <Container>
           <SearchBar onSetQuery={this.searchBtn} />
           <ImageGalleryV1 imagesList={imagesList} />
