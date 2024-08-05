@@ -41,15 +41,31 @@ class App extends Component {
       // ! Оновлення стану з колбеком (офіційний React підхід):
       this.setState({ page: 1, query, imagesList: [] }, async () => {
         // запит до API тільки після оновлення стану:
-        await this.fetchImages(query);
+        const result = await this.fetchImages(query);
+        this.setState(result);
       });
     } else {
       // Якщо запит не змінювався, одразу виконую запит
-      await this.fetchImages(query);
+      const result = await this.fetchImages(query);
+      this.setState(result);
     }
   };
 
-  // Додваткова функція для виконання запиту та оновлення стану:
+  // Функція для оновлення стану за результатами запиту на сервер
+  setState = ({ hits, totalHits }) => {
+    this.setState(prevState => {
+      return {
+        imagesList:
+          this.state.page === 1
+            ? [...hits]
+            : [...prevState.imagesList, ...hits],
+        totalHits,
+        isLoading: false,
+      };
+    });
+  };
+
+  // Функція для виконання запиту на сервер:
   fetchImages = async query => {
     try {
       const { hits, totalHits } = await searchAPI.fetchImage(
@@ -63,16 +79,7 @@ class App extends Component {
         toast.info(`Sorry we not found any images with this request`);
       }
 
-      this.setState(prevState => {
-        return {
-          imagesList:
-            this.state.page === 1
-              ? [...hits]
-              : [...prevState.imagesList, ...hits],
-          totalHits,
-          isLoading: false,
-        };
-      });
+      return { hits, totalHits };
     } catch (error) {
       console.log("error:::", error.message);
       toast.error(`error.massage`);
