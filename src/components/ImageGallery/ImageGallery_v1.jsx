@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ImageGalleryItem from "components/ImageGalleryItem";
+import { ImageGalleryList } from "./ImageGallery.styled";
 
 class ImageGallery extends Component {
   render() {
@@ -7,11 +8,11 @@ class ImageGallery extends Component {
 
     return (
       <>
-        <ul className="gallery">
+        <ImageGalleryList>
           {imagesList.map(image => (
             <ImageGalleryItem image={image} key={image.id} />
           ))}
-        </ul>
+        </ImageGalleryList>
       </>
     );
   }

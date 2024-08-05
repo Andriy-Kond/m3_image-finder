@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Container } from "./App.styled";
 import ImageGalleryV1 from "components/ImageGallery/ImageGallery_v1";
 import SearchBar from "components/SearchBar";
 import searchAPI from "services/searchAPI";
@@ -48,7 +49,7 @@ class App extends Component {
     const isDisabledLoadMoreBtn = remainsItems === 0;
 
     return (
-      <>
+      <Container>
         <SearchBar onSetQuery={this.onSearchImage} />
         <ImageGalleryV1 imagesList={imagesList} />
 
@@ -59,7 +60,7 @@ class App extends Component {
             isDisabledLoadMoreBtn={isDisabledLoadMoreBtn}
           />
         )}
-      </>
+      </Container>
     );
   }
 }

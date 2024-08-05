@@ -1,4 +1,13 @@
 import React, { Component } from "react";
+import {
+  Header,
+  SearchForm,
+  SearchFormBtn,
+  SearchFormBtnLbl,
+  SearchFormInput,
+} from "./SearchBar.styled";
+
+import { MdOutlineImageSearch } from "react-icons/md";
 
 class SearchBar extends Component {
   state = {
@@ -19,10 +28,9 @@ class SearchBar extends Component {
     const { query } = this.state;
 
     return (
-      <header className="searchbar">
-        <form className="form" onSubmit={this.onSubmit}>
-          <input
-            className="input"
+      <Header>
+        <SearchForm onSubmit={this.onSubmit}>
+          <SearchFormInput
             type="text"
             autoComplete="off"
             autoFocus
@@ -30,11 +38,14 @@ class SearchBar extends Component {
             value={query}
             onChange={this.changeQuery}
           />
-          <button type="submit" className="button">
-            <span className="button-label">Search</span>
-          </button>
-        </form>
-      </header>
+          <SearchFormBtn type="submit">
+            <MdOutlineImageSearch
+              style={{ width: "100%", height: "100%", fill: "blue" }}
+            />
+            {/* <SearchFormBtnLbl>Search</SearchFormBtnLbl> */}
+          </SearchFormBtn>
+        </SearchForm>
+      </Header>
     );
   }
 }

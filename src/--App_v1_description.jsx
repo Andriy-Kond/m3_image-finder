@@ -1,6 +1,7 @@
 // todo кнопка і спінер вилітають за межі body при натисканні кнопки Load More. Треба зробити прокручування, чи щось таке до самого низу, щоби їх було видно
 
 import React, { Component } from "react";
+import { Container } from "./App.styled";
 import ImageGalleryV1 from "components/ImageGallery/ImageGallery_v1";
 import SearchBar from "components/SearchBar";
 import searchAPI from "services/searchAPI";
@@ -16,7 +17,8 @@ class App extends Component {
     isLoading: false,
   };
 
-  // * В такому варіанті буде непередбачувана поведінка, бо setState виконується асинхронно і керується React, а не JS (наприклад, може збирати декілька запитів і потім пушити їх за один захід для економії ресурсів). Тому треба або промісифікувати setState (щоби він повертав проміси) і додавати async-await, або виконувати усі умови в callback-ах, які йдуть другим аргументом у setState. Ще один варіант - перенести логіку в ImageGallery і там робити setState-ти за умовами в componentDidUpdate().
+  // * -== Не правильний варіант -==
+  // В такому варіанті буде непередбачувана поведінка, бо setState виконується асинхронно і керується React, а не JS(наприклад, може збирати декілька запитів і потім пушити їх за один захід для економії ресурсів). Тому треба або промісифікувати setState(щоби він повертав проміси) і додавати async - await, або виконувати усі умови в callback - ах, які йдуть другим аргументом у setState.Ще один варіант - перенести логіку в ImageGallery і там робити setState - ти за умовами в componentDidUpdate().
 
   // onSearchImage = async query => {
   //   this.setState({ isLoading: true });
@@ -36,8 +38,9 @@ class App extends Component {
   //     isLoading: false,
   //   }));
   // };
+  // /-== Не правильний варіант -==
 
-  //  * Промісифікація setState:
+  //  * -== Промісифікація setState ==-
   onSearchImage = async query => {
     this.setState({ isLoading: true });
     if (query !== this.state.query) {
@@ -60,8 +63,9 @@ class App extends Component {
       isLoading: false,
     }));
   };
+  // /-== Промісифікація setState ==-
 
-  // * Без промісифікації:
+  // * -== Без промісифікації ==-
   //   onSearchImage = async query => {
   //   // Спочатку встановлюємо isLoading в true
   //   this.setState({ isLoading: true });
@@ -93,6 +97,7 @@ class App extends Component {
   //     isLoading: false,
   //   }));
   // };
+  // /-== Без промісифікації ==-
 
   loadMoreBtn = async () => {
     // setState асинхронна, але керує нею React, а не JS і вона не повертає проміс, тому не є чистою async-функцією.
@@ -110,7 +115,7 @@ class App extends Component {
     const isDisabledLoadMoreBtn = remainsItems === 0;
 
     return (
-      <>
+      <Container>
         <SearchBar onSetQuery={this.onSearchImage} />
         <ImageGalleryV1 imagesList={imagesList} />
 
@@ -121,7 +126,7 @@ class App extends Component {
             isDisabledLoadMoreBtn={isDisabledLoadMoreBtn}
           />
         )}
-      </>
+      </Container>
     );
   }
 }

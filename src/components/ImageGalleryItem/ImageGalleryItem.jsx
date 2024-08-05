@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import Modal from "components/Modal";
+import { Item, ItemImage } from "./ImageGalleryItem.styled";
+import ModalWindow from "components/Modal/Modal";
+// import Modal from "components/Modal";
 
 class ImageGalleryItem extends Component {
   state = {
@@ -18,17 +20,17 @@ class ImageGalleryItem extends Component {
 
     return (
       <>
-        <li className="gallery-item">
-          <img
+        <Item className="gallery-item">
+          <ItemImage
             src={image.webformatURL}
             alt={image.tags}
             style={{ height: 100 }}
             onClick={this.toggleShowImage}
           />
-        </li>
+        </Item>
 
         {isShowModal && (
-          <Modal image={image} toggleShowImage={this.toggleShowImage} />
+          <ModalWindow image={image} toggleShowImage={this.toggleShowImage} />
         )}
       </>
     );

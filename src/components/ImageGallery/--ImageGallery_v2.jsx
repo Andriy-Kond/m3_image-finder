@@ -3,6 +3,7 @@ import ImageGalleryItem from "components/ImageGalleryItem";
 import Button from "components/Button";
 import searchAPI from "services/searchAPI";
 import Loader from "components/Loader";
+import { ImageGalleryList } from "./ImageGallery.styled";
 
 class ImageGallery extends Component {
   state = {
@@ -63,11 +64,11 @@ class ImageGallery extends Component {
 
     return (
       <>
-        <ul className="gallery">
+        <ImageGalleryList>
           {imagesList.map(image => (
             <ImageGalleryItem image={image} key={image.id} />
           ))}
-        </ul>
+        </ImageGalleryList>
 
         {isLoading && <Loader />}
 

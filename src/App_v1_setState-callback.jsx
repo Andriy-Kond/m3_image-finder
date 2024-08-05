@@ -1,4 +1,8 @@
-import React, { Component } from "react";
+import React, { Component, createRef } from "react";
+import { Slide, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import { Container } from "./App.styled";
 import ImageGalleryV1 from "components/ImageGallery/ImageGallery_v1";
 import SearchBar from "components/SearchBar";
 import searchAPI from "services/searchAPI";
@@ -6,6 +10,11 @@ import Button from "components/Button";
 import Loader from "components/Loader";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.loadMoreRef = createRef(); // Додаємо посилання на кнопку "Load More"
+  }
+
   state = {
     query: "",
     imagesList: [],
@@ -14,36 +23,75 @@ class App extends Component {
     isLoading: false,
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    // Прокрутка вниз, якщо зображення додані, або показується loading
+    if (
+      this.state.imagesList.length > prevState.imagesList.length ||
+      this.state.isLoading
+    ) {
+      if (this.loadMoreRef.current) {
+        this.loadMoreRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }
+
   onSearchImage = async query => {
     this.setState({ isLoading: true });
-
     if (query !== this.state.query) {
       // ! Оновлення стану з колбеком (офіційний React підхід):
-      this.setState({ page: 1, query, imagesList: [] }, () => {
+      this.setState({ page: 1, query, imagesList: [] }, async () => {
         // запит до API тільки після оновлення стану:
-        this.fetchImages(query);
+        await this.fetchImages(query);
       });
     } else {
       // Якщо запит не змінювався, одразу виконую запит
-      this.fetchImages(query);
+      await this.fetchImages(query);
     }
   };
 
   // Додваткова функція для виконання запиту та оновлення стану:
   fetchImages = async query => {
-    const { hits, totalHits } = await searchAPI.fetchImage(
-      query,
-      this.state.page,
-    );
+    try {
+      const { hits, totalHits } = await searchAPI.fetchImage(
+        query,
+        this.state.page,
+      );
 
-    this.setState(prevState => ({
-      imagesList: [...prevState.imagesList, ...hits],
-      totalHits,
-      isLoading: false,
-    }));
+      if (totalHits > 0) {
+        toast.success(`We found ${totalHits} images!`);
+      } else {
+        toast.info(`Sorry we not found any images with this request`);
+      }
+
+      this.setState(prevState => {
+        return {
+          imagesList:
+            this.state.page === 1
+              ? [...hits]
+              : [...prevState.imagesList, ...hits],
+          totalHits,
+          isLoading: false,
+        };
+      });
+    } catch (error) {
+      console.log("error:::", error.message);
+      toast.error(`error.massage`);
+      this.setState({ isLoading: false });
+    }
   };
 
-  loadMoreBtn = async () => {
+  // Дії при кліку на кнопку Search (новий пошук)
+  searchBtn = async query => {
+    console.log("search btn");
+    this.setState({ page: 1 }, async () => {
+      await this.onSearchImage(query);
+    });
+  };
+
+  // Дії при кліку на кнопку Load More (додавання сторінки до існуючого пошуку)
+  loadMoreBtn = e => {
+    e.target.blur(); // зняття фокусу з кнопки, щоб ховер знов працював.
+
     this.setState(
       prevState => ({ page: prevState.page + 1 }),
       () => this.onSearchImage(this.state.query),
@@ -57,16 +105,20 @@ class App extends Component {
 
     return (
       <>
-        <SearchBar onSetQuery={this.onSearchImage} />
-        <ImageGalleryV1 imagesList={imagesList} />
+        <ToastContainer autoClose={2000} transition={Slide} />
+        <Container>
+          <SearchBar onSetQuery={this.searchBtn} />
+          <ImageGalleryV1 imagesList={imagesList} />
 
-        {isLoading && <Loader />}
-        {imagesList.length > 0 && (
-          <Button
-            onLoadMore={this.loadMoreBtn}
-            isDisabledLoadMoreBtn={isDisabledLoadMoreBtn}
-          />
-        )}
+          {isLoading && <Loader />}
+          {imagesList.length > 0 && (
+            <Button
+              onLoadMore={this.loadMoreBtn}
+              isDisabledLoadMoreBtn={isDisabledLoadMoreBtn}
+              ref={this.loadMoreRef}
+            />
+          )}
+        </Container>
       </>
     );
   }

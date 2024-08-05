@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import * as basicLightbox from "basiclightbox";
 import "basiclightbox/dist/basicLightbox.min.css";
+import { Overlay, ModalIns } from "./Modal.styled";
 
-class Modal extends Component {
+class ModalWindow extends Component {
   state = {
     instance: null,
   };
@@ -13,11 +14,11 @@ class Modal extends Component {
     const { image } = this.props;
     const instance = basicLightbox.create(
       `
-        <div className="overlay">
-        <div className="modal">
+        <${Overlay}>
+        <${ModalIns}>
         <img src=${image.largeImageURL} alt=${image.tags} />
-        </div>
-        </div>
+        </${ModalIns}>
+        </${Overlay}>
         `,
       {
         onClose: () => {
@@ -47,4 +48,4 @@ class Modal extends Component {
   }
 }
 
-export default Modal;
+export default ModalWindow;
