@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import * as basicLightbox from "basiclightbox";
 // import "basiclightbox/dist/basicLightbox.min.css";
 import "basiclightbox/src/styles/main.scss";
-import { Overlay, ModalIns, ModalImg } from "./Modal.styled";
+import { Overlay, ModalIns } from "./Modal.styled";
 
 // $basicLightbox__background: rgba(0, 0, 0, 0.8); // Background color
 // $basicLightbox__zIndex: 1000; // Stack order
