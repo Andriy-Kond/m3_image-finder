@@ -128,21 +128,19 @@ class App extends Component {
     const isDisabledLoadMoreBtn = remainsItems === 0;
 
     return (
-      <>
-        <Container>
-          <SearchBar onSetQuery={this.searchBtn} />
-          <ImageGalleryV1 imagesList={imagesList} />
+      <Container>
+        <SearchBar onSetQuery={this.searchBtn} />
+        <ImageGalleryV1 imagesList={imagesList} />
 
-          {isLoading && <Loader />}
-          {imagesList.length > 0 && (
-            <Button
-              onLoadMore={this.loadMoreBtn}
-              isDisabledLoadMoreBtn={isDisabledLoadMoreBtn}
-              ref={this.loadMoreRef}
-            />
-          )}
-        </Container>
-      </>
+        {isLoading && <Loader />}
+        {imagesList.length > 0 && (
+          <Button
+            onLoadMore={this.loadMoreBtn}
+            isDisabledLoadMoreBtn={isDisabledLoadMoreBtn}
+            ref={this.loadMoreRef}
+          />
+        )}
+      </Container>
     );
   }
 }

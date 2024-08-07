@@ -7,13 +7,11 @@ class ImageGallery extends Component {
     const { imagesList } = this.props;
 
     return (
-      <>
-        <ImageGalleryList>
-          {imagesList.map(image => (
-            <ImageGalleryItem image={image} key={image.id} />
-          ))}
-        </ImageGalleryList>
-      </>
+      <ImageGalleryList>
+        {imagesList.map(image => (
+          <ImageGalleryItem image={image} key={image.id} />
+        ))}
+      </ImageGalleryList>
     );
   }
 }
