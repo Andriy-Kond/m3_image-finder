@@ -17,7 +17,7 @@ Notify.init({
 class App extends Component {
   constructor(props) {
     super(props);
-    this.loadMoreBtnRef = createRef(); // Додаємо посилання на кнопку "Load More"
+    this.loadMoreBtnRef = createRef(); // Додавання посилання на кнопку "Load More"
   }
 
   state = {
@@ -31,27 +31,54 @@ class App extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { imagesList, isLoading } = this.state;
 
-    // Прокрутка вниз, якщо зображення додані, або показується loading
+    // Прокрутка вниз, якщо додані нові зображення, або показується loading
     if (imagesList.length > prevState.imagesList.length || isLoading) {
       if (this.loadMoreBtnRef.current) {
-        this.loadMoreBtnRef.current.scrollIntoView({ behavior: "smooth" });
+        this.loadMoreBtnRef.current.scrollIntoView({
+          behavior: "smooth",
+        });
       }
     }
   }
 
+  // Дії при кліку на кнопку Search (новий пошук)
+  searchBtn = async query => {
+    this.setState({ page: 1, imagesList: [], query }, () => {
+      this.onSearchImage(query);
+    });
+  };
+
+  // Дії при кліку на кнопку Load More (додавання сторінки до існуючого пошуку)
+  loadMoreBtn = e => {
+    e.target.blur(); // зняття фокусу з кнопки, щоб ховер знов працював.
+
+    this.setState(
+      prevState => ({ page: prevState.page + 1 }),
+      () => this.onSearchImage(this.state.query),
+    );
+  };
+
   onSearchImage = async query => {
     this.setState({ isLoading: true });
-    if (query !== this.state.query) {
-      // ! Оновлення стану з колбеком (офіційний React підхід):
-      this.setState({ page: 1, query, imagesList: [] }, async () => {
-        // запит до API тільки після оновлення стану:
-        const result = await this.fetchImages(query);
-        this.updateState(result);
-      });
-    } else {
-      // Якщо запит не змінювався, одразу виконую запит
+
+    setTimeout(async () => {
       const result = await this.fetchImages(query);
       this.updateState(result);
+    }, 300);
+  };
+
+  // Функція для виконання запиту на сервер:
+  fetchImages = async query => {
+    try {
+      const { hits, totalHits } = await searchAPI.fetchImage(
+        query,
+        this.state.page,
+      );
+
+      return { hits, totalHits };
+    } catch (error) {
+      Notify.failure(`Error: ${error.message}`);
+      this.setState({ isLoading: false });
     }
   };
 
@@ -74,51 +101,16 @@ class App extends Component {
         const remainsItems = totalHits - imagesList.length;
         if (totalHits > 0 && page === 1) {
           Notify.success(`We found ${totalHits} images!`, { timeout: 2000 });
-        } else {
         }
 
         if (totalHits === 0) {
           Notify.info(`Sorry we not found any images with this request`);
         } else {
           if (remainsItems === 0) {
-            Notify.info(
-              `This was the last batch of images. We don't have any more.`,
-            );
+            Notify.info(`It's all that we have by this request.`);
           }
         }
       },
-    );
-  };
-
-  // Функція для виконання запиту на сервер:
-  fetchImages = async query => {
-    try {
-      const { hits, totalHits } = await searchAPI.fetchImage(
-        query,
-        this.state.page,
-      );
-
-      return { hits, totalHits };
-    } catch (error) {
-      Notify.failure(`Error: ${error.message}`);
-      this.setState({ isLoading: false });
-    }
-  };
-
-  // Дії при кліку на кнопку Search (новий пошук)
-  searchBtn = async query => {
-    this.setState({ page: 1 }, async () => {
-      await this.onSearchImage(query);
-    });
-  };
-
-  // Дії при кліку на кнопку Load More (додавання сторінки до існуючого пошуку)
-  loadMoreBtn = e => {
-    e.target.blur(); // зняття фокусу з кнопки, щоб ховер знов працював.
-
-    this.setState(
-      prevState => ({ page: prevState.page + 1 }),
-      () => this.onSearchImage(this.state.query),
     );
   };
 

@@ -52,7 +52,7 @@ const Button = forwardRef(({ onLoadMore, isDisabledLoadMoreBtn }, ref) => (
     type="button"
     onClick={onLoadMore}
     disabled={isDisabledLoadMoreBtn}
-    ref={ref} // Передаємо ref
+    ref={ref} // Передача посилання ref
   >
     Load More
   </ButtonLoadMore>
