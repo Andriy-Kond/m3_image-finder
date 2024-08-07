@@ -17,7 +17,7 @@ Notify.init({
 class App extends Component {
   constructor(props) {
     super(props);
-    this.loadMoreRef = createRef(); // Додаємо посилання на кнопку "Load More"
+    this.loadMoreBtnRef = createRef(); // Додаємо посилання на кнопку "Load More"
   }
 
   state = {
@@ -33,8 +33,8 @@ class App extends Component {
 
     // Прокрутка вниз, якщо зображення додані, або показується loading
     if (imagesList.length > prevState.imagesList.length || isLoading) {
-      if (this.loadMoreRef.current) {
-        this.loadMoreRef.current.scrollIntoView({ behavior: "smooth" });
+      if (this.loadMoreBtnRef.current) {
+        this.loadMoreBtnRef.current.scrollIntoView({ behavior: "smooth" });
       }
     }
   }
@@ -137,7 +137,7 @@ class App extends Component {
           <Button
             onLoadMore={this.loadMoreBtn}
             isDisabledLoadMoreBtn={isDisabledLoadMoreBtn}
-            ref={this.loadMoreRef}
+            ref={this.loadMoreBtnRef}
           />
         )}
       </Container>
