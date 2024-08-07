@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const Header = styled.header`
+  z-index: 1;
   top: 0;
   left: 0;
   position: sticky;
@@ -10,6 +11,7 @@ const Header = styled.header`
   align-items: center;
   width: 100vw;
   min-height: 64px;
+
   padding-right: 24px;
   padding-left: 24px;
   padding-top: 12px;
